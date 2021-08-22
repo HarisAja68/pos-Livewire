@@ -15,6 +15,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/fontawesome-free/css/all.min.css') }}">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -90,7 +91,7 @@
             </div>
         </main>
     </div>
-
     @livewireScripts
+    <script src="{{ asset('js/turbolinks.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
 </body>
 </html>

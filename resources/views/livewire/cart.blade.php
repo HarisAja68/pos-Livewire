@@ -15,7 +15,7 @@
                     <div class="col-md-3 mb-3">
                         <div class="card">
                             <div class="card-body">
-                                <img src="{{ asset('storage/images/'.$item->image) }}" alt="Produk" class="img-fluid">
+                                <img src="{{ asset('storage/images/'.$item->image) }}" alt="Produk" style="object-fit: contain; width: 100%; height:125px">
                             </div>
                             <div class="card-footer">
                                 <h5 class="text-center font-weight-bold">{{ $item->name }}</h5>
@@ -59,9 +59,9 @@
                                 <td>
                                     <h5 class="font-weight-bold">{{ $item['name'] }}</h5>
                                     Jumlah: {{ $item['qty'] }}
-                                    <a href="#" wire:click="increaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">+</a>
-                                    <a href="#" wire:click="decreaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">-</a>
-                                    <a href="#" wire:click="removeItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">x</a>
+                                    <h6 wire:click="increaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline" style="cursor:pointer"><i class="fa fa-plus"></i></h6>
+                                    <h6 wire:click="decreaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline" style="cursor:pointer"><i class="fa fa-minus"></i></h6>
+                                    <h6 wire:click="removeItem('{{ $item['rowId'] }}')" class="font-weight-bold text-danger d-inline" style="cursor:pointer"><i class="fa fa-trash-alt"></i></h6>
                                 </td>
                                 <td>Rp. {{ format_uang($item['price']) }}</td>
                             </tr>
