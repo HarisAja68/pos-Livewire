@@ -67,6 +67,7 @@ class Cart extends Component
         $rowId = "Cart" . $id;
         $cart = \Cart::session(Auth()->id())->getContent();
         $cekItemId = $cart->whereIn('id', $rowId);
+
         if ($cekItemId->isNotEmpty()) {
             \Cart::session(Auth()->id())->update($rowId, [
                 'quantity' => [
@@ -96,5 +97,50 @@ class Cart extends Component
     public function disableTax()
     {
         $this->tax = "0%";
+    }
+
+    public function increaseItem($rowId)
+    {
+        $idProduk = substr($rowId, 4, 5);
+        $produk = ProdukModel::find($idProduk);
+
+        $cart = \Cart::session(Auth()->id())->getContent();
+        $cekItem = $cart->whereIn('id', $rowId);
+
+        if ($produk->qty == $cekItem[$rowId]->quantity) {
+            session()->flash('error', 'Jumlah Item Kurang');
+        } else {
+            \Cart::session(Auth()->id())->update($rowId, [
+                'quantity' => [
+                    'relative' => true,
+                    'value' => 1,
+                ]
+            ]);
+        }
+    }
+
+    public function decreaseItem($rowId)
+    {
+        $idProduk = substr($rowId, 4, 5);
+        $produk = ProdukModel::find($idProduk);
+
+        $cart = \Cart::session(Auth()->id())->getContent();
+        $cekItem = $cart->whereIn('id', $rowId);
+
+        if ($cekItem[$rowId]->quantity == 1) {
+            $this->removeItem($rowId);
+        } else {
+            \Cart::session(Auth()->id())->update($rowId, [
+                'quantity' => [
+                    'relative' => true,
+                    'value' => -1,
+                ]
+            ]);
+        }
+    }
+
+    public function removeItem($rowId)
+    {
+        \Cart::session(Auth()->id())->remove($rowId);
     }
 }

@@ -25,8 +25,13 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="font-weight-bold">Cart</h2>
+                <p class="text-danger font-weight-bold">
+                    @if (session()->has('error'))
+                        {{ session('error') }}
+                    @endif
+                </p>
                 <table class="table table-bordered table-striped">
-                    <thead>
+                    <thead class="bg-secondary text-white">
                         <tr>
                             <th>No</th>
                             <th>Nama</th>
@@ -37,8 +42,14 @@
                         @forelse ($cart as $key => $item)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>{{ $item['name'] }} || {{ $item['qty'] }} </td>
-                                <td>{{ $item['price']}} </td>
+                                <td>
+                                    <h5 class="font-weight-bold">{{ $item['name'] }}</h5>
+                                    Jumlah: {{ $item['qty'] }}
+                                    <a href="#" wire:click="increaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">+</a>
+                                    <a href="#" wire:click="decreaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">-</a>
+                                    <a href="#" wire:click="removeItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">x</a>
+                                </td>
+                                <td>{{ $item['price'] }} </td>
                             </tr>
                         @empty
                             <td colspan="3"><h5 class="text-center">Cart Kosong</h5></td>
