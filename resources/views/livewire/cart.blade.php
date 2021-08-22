@@ -2,21 +2,35 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <h2 class="font-weight-bold">Produk List</h2>
                 <div class="row">
-                    @foreach ($produk as $item)
-                        <div class="col-md-3 mb-3">
-                            <div class="card">
-                                <div class="card-body">
-                                    <img src="{{ asset('storage/images/'.$item->image) }}" alt="Produk" class="img-fluid">
-                                </div>
-                                <div class="card-footer">
-                                    <h5 class="text-center font-weight-bold">{{ $item->name }}</h5>
-                                    <button wire:click="addItem({{ $item->id }})" class="btn btn-primary btn-sm btn-block">Tambah Ke Cart</button>
-                                </div>
+                    <div class="col-md-6 mb-3">
+                        <h2 class="font-weight-bold">Produk List</h2>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <input wire:model="search" type="text" class="form-control" placeholder="Search Produk...">
+                    </div>
+                </div>
+                <div class="row">
+                    @forelse ($produk as $item)
+                    <div class="col-md-3 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="{{ asset('storage/images/'.$item->image) }}" alt="Produk" class="img-fluid">
+                            </div>
+                            <div class="card-footer">
+                                <h5 class="text-center font-weight-bold">{{ $item->name }}</h5>
+                                <button wire:click="addItem({{ $item->id }})" class="btn btn-primary btn-sm btn-block">Tambah Ke Cart</button>
                             </div>
                         </div>
-                    @endforeach
+                    </div>
+                    @empty
+                    <div class="col-md-12 mt-2">
+                        <h2 class=" text-center font-weight-bold">Tidak ditemukan produk yang dicari</h2>
+                    </div>
+                    @endforelse
+                </div>
+                <div class="d-flex justify-content-center">
+                    {{ $produk->links() }}
                 </div>
             </div>
         </div>
@@ -49,7 +63,7 @@
                                     <a href="#" wire:click="decreaseItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">-</a>
                                     <a href="#" wire:click="removeItem('{{ $item['rowId'] }}')" class="font-weight-bold d-inline">x</a>
                                 </td>
-                                <td>{{ $item['price'] }} </td>
+                                <td>Rp. {{ format_uang($item['price']) }}</td>
                             </tr>
                         @empty
                             <td colspan="3"><h5 class="text-center">Cart Kosong</h5></td>
@@ -61,9 +75,9 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="font-weight-bold">Summary</h4>
-                <h4 class="font-weight-bold">Sub Total: {{ $summary['sub_total'] }}</h4>
-                <h4 class="font-weight-bold">pajak: {{ $summary['pajak'] }}</h4>
-                <h4 class="font-weight-bold">Total: {{ $summary['total'] }}</h4>
+                <h4 class="font-weight-bold">Sub Total: Rp. {{ format_uang($summary['sub_total']) }}</h4>
+                <h4 class="font-weight-bold">Pajak: Rp. {{ format_uang($summary['pajak']) }}</h4>
+                <h4 class="font-weight-bold">Total: Rp. {{ format_uang($summary['total']) }}</h4>
             </div>
             <div>
                 <button wire:click="enableTax" class="btn btn-primary btn-block">Tambah Pajak</button>

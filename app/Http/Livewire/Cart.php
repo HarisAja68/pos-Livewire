@@ -5,14 +5,26 @@ namespace App\Http\Livewire;
 use App\Models\Produk as ProdukModel;
 use Carbon\Carbon;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Cart extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    public $search;
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     public $tax = "0%";
 
     public function render()
     {
-        $produk = ProdukModel::orderBy('created_at', 'desc')->get();
+        $produk = ProdukModel::where('name', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(4);
 
         $condition = new \Darryldecode\Cart\CartCondition([
             'name' => 'pajak',
