@@ -77,16 +77,23 @@ class Cart extends Component
     public function addItem($id)
     {
         $rowId = "Cart" . $id;
+        $idProduk = substr($rowId, 4, 5);
+        $produk = ProdukModel::find($idProduk);
+
         $cart = \Cart::session(Auth()->id())->getContent();
         $cekItemId = $cart->whereIn('id', $rowId);
 
         if ($cekItemId->isNotEmpty()) {
-            \Cart::session(Auth()->id())->update($rowId, [
-                'quantity' => [
-                    'relative' => true,
-                    'value' => 1,
-                ]
-            ]);
+            if ($produk->qty == $cekItemId[$rowId]->quantity) {
+                session()->flash('error', 'Jumlah Item Kurang');
+            } else {
+                \Cart::session(Auth()->id())->update($rowId, [
+                    'quantity' => [
+                        'relative' => true,
+                        'value' => 1,
+                    ]
+                ]);
+            }
         } else {
             $produk = ProdukModel::findOrfail($id);
             \Cart::session(Auth()->id())->add([

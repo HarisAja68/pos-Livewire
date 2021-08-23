@@ -7,12 +7,12 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>No</th>
-                                <th>Nama</th>
-                                <th width="20%">Image</th>
-                                <th>Deskripsi</th>
-                                <th>Jumlah</th>
-                                <th>Harga</th>
+                                <th class="font-weight-bold">No</th>
+                                <th class="font-weight-bold">Nama</th>
+                                <th class="font-weight-bold" width="20%">Image</th>
+                                <th class="font-weight-bold">Deskripsi</th>
+                                <th class="font-weight-bold">Jumlah</th>
+                                <th class="font-weight-bold">Harga</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -20,7 +20,7 @@
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item->name }}</td>
-                                <td><img src="{{ asset('storage/images/'.$item->image) }}" alt="image produk" class="img-fluid"></td>
+                                <td><img src="{{ asset('storage/images/'.$item->image) }}" alt="image produk" class="img-fluid" width="75%"></td>
                                 <td>{{ $item->description }}</td>
                                 <td>{{ $item->qty }}</td>
                                 <td>{{ $item->price }}</td>
@@ -34,7 +34,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="font-weight-bold mb-3">Buat Produk</h2>
+                    <h2 class="font-weight-bold mb-3">Tambah Produk</h2>
                     <form wire:submit.prevent="store">
                         <div class="form-group">
                             <label>Nama Produk</label>
