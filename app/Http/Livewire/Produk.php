@@ -6,16 +6,28 @@ use App\Models\Produk as ProdukModel;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Produk extends Component
 {
+    use WithPagination;
+    protected $paginationTheme = 'bootstrap';
+
+    public $search;
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
     use WithFileUploads;
 
     public $name, $image, $description, $qty, $price;
 
     public function render()
     {
-        $produk = ProdukModel::orderBy('created_at', 'desc')->get();
+        $produk = ProdukModel::where('name', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
         return view('livewire.produk', [
             'produk' => $produk
         ]);

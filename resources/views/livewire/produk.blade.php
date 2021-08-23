@@ -3,7 +3,14 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="font-weight-bold mb-3">Produk List</h2>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h2 class="font-weight-bold">Produk List</h2>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <input wire:model="search" type="text" class="form-control" placeholder="Search Produk...">
+                        </div>
+                    </div>
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
@@ -16,7 +23,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($produk as $key => $item)
+                            @forelse ($produk as $key => $item)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item->name }}</td>
@@ -25,9 +32,16 @@
                                 <td>{{ $item->qty }}</td>
                                 <td>{{ $item->price }}</td>
                             </tr>
-                            @endforeach
+                            @empty
+                                <td colspan="6">
+                                    <h2 class="text-center font-weight-bold">Tidak ditemukan produk yang dicari</h2>
+                                </td>
+                            @endforelse
                         </tbody>
                     </table>
+                    <div class="d-flex justify-content-center">
+                        {{ $produk->links() }}
+                    </div>
                 </div>
             </div>
         </div>
