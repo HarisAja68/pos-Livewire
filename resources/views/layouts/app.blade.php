@@ -94,5 +94,6 @@
     </div>
     @livewireScripts
     <script src="{{ asset('js/turbolinks.js') }}" data-turbolinks-eval="false" data-turbo-eval="false"></script>
+    @stack('script')
 </body>
 </html>

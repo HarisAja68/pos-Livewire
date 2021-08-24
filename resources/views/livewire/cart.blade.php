@@ -87,13 +87,64 @@
                 <h5 class="font-weight-bold">Pajak: Rp. {{ format_uang($summary['pajak']) }}</h5>
                 <h5 class="font-weight-bold">Total: Rp. {{ format_uang($summary['total']) }}</h5>
             </div>
-            <div class="container-fluid">
-                <button wire:click="enableTax" class="btn btn-primary btn-block mb-1">Tambah Pajak</button>
-                <button wire:click="disableTax" class="btn btn-danger btn-block">Hapus Pajak</button>
+            <div class="row mt-1 container-fluid">
+                <div class="col-md-6">
+                    <button wire:click="enableTax" class="btn btn-primary btn-block mb-1">Tambah Pajak</button>
+                </div>
+                <div class="col-md-6">
+                    <button wire:click="disableTax" class="btn btn-danger btn-block">Hapus Pajak</button>
+                </div>
+            </div>
+            <div class="container-fluid mt-3">
+                <input type="number" class="form-control" id="pembayaran" placeholder="Isi pembayaran pelanggan">
+                <input type="hidden" id="total" value="{{ $summary['total'] }}">
+            </div>
+            <div class="container-fluid mt-2">
+                <label>Pembayaran</label>
+                <h1 id="pembayaranTex">Rp. 0</h1>
+            </div>
+            <div class="container-fluid mt-2">
+                <label>Kembalian</label>
+                <h1 id="kembalianTex">Rp. 0</h1>
             </div>
             <div class="container-fluid mt-2 mb-2">
-                <button class="btn btn-success btn-block"><i class="fa fa-save"> Simpan Transaksi</i></button>
+                <button wire:ignore id="saveButton" class="btn btn-success btn-block" disabled><i class="fa fa-save"> Simpan Transaksi</i></button>
             </div>
         </div>
     </div>
 </div>
+
+@push('script')
+<script>
+    pembayaran.oninput = () => {
+        const pembayaranAmount = document.getElementById("pembayaran").value;
+        const totalAmount = document.getElementById("total").value;
+        const kembalian = pembayaranAmount - totalAmount;
+
+        document.getElementById("pembayaranTex").innerHTML = `Rp. ${rupiah(pembayaranAmount)}`;
+        document.getElementById("kembalianTex").innerHTML = `Rp. ${rupiah(kembalian)}`;
+
+        const saveButton = document.getElementById("saveButton");
+        if (kembalian < 0) {
+            saveButton.disabled = true;
+        } else {
+            saveButton.disabled = false;
+        }
+    }
+
+    const rupiah = (angka) => {
+            const numberString = angka.toString();
+            const split = numberString.split(',');
+            const sisa = split[0].length % 3;
+            let rupiah = split[0].substr(0, sisa);
+            const ribuan = split[0].substr(sisa).match(/\d{1,3}/gi);
+
+            if(ribuan){
+                const separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            return split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        }
+</script>
+@endpush
