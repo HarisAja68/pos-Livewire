@@ -20,6 +20,7 @@
                             </div>
                             <div class="card-footer bg-white">
                                 <h5 class="text-center font-weight-bold">{{ $item->name }}</h5>
+                                <h6 class="text-center font-weight-bold">Jumlah {{ $item->qty }}</h6>
                                 <h6 class="text-center font-weight-bold">Rp. {{ format_uang($item->price) }}</h6>
                             </div>
                         </div>
@@ -96,20 +97,23 @@
                 </div>
             </div>
             <div class="container-fluid mt-3">
-                <input type="number" class="form-control" id="pembayaran" placeholder="Isi pembayaran pelanggan">
+                <label>Pembayaran</label>
+                <input type="number" wire:model="payment" class="form-control" id="pembayaran" placeholder="Isi pembayaran pelanggan">
                 <input type="hidden" id="total" value="{{ $summary['total'] }}">
             </div>
-            <div class="container-fluid mt-2">
-                <label>Pembayaran</label>
-                <h1 id="pembayaranTex">Rp. 0</h1>
-            </div>
-            <div class="container-fluid mt-2">
-                <label>Kembalian</label>
-                <h1 id="kembalianTex">Rp. 0</h1>
-            </div>
-            <div class="container-fluid mt-2 mb-2">
-                <button wire:ignore id="saveButton" class="btn btn-success btn-block" disabled><i class="fa fa-save"> Simpan Transaksi</i></button>
-            </div>
+           <form wire:submit.prevent="handleSubmit">
+                <div class="container-fluid mt-2">
+                    <label>Nilai Pembayaran</label>
+                    <h1 id="pembayaranTex" wire:ignore>Rp. 0</h1>
+                </div>
+                <div class="container-fluid mt-2">
+                    <label>Kembalian</label>
+                    <h1 id="kembalianTex" wire:ignore>Rp. 0</h1>
+                </div>
+                <div class="container-fluid mt-2 mb-2">
+                    <button wire:ignore id="saveButton" class="btn btn-success btn-block" disabled><i class="fa fa-save"> Simpan Transaksi</i></button>
+                </div>
+           </form>
         </div>
     </div>
 </div>
